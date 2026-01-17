@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+
+
+.horizontal-slider-container {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.horizontal-sliders {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 500%;
+  height: 100vh;
+}
+
+.slide {
+  height: 100vh;
+  width: 100vw;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: bold;
+  position: relative;
+}
+
+.slide-content {
+  text-align: center;
+  padding: 2rem;
+  max-width: 800px;
+}
+
+.slide-content h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.slide-content p {
+  font-size: 1.5rem;
+  opacity: 0.9;
+}
+
+.next-block {
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: background-color 0.5s ease;
+}
+
+.next-block-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.next-block-content h2 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.next-block-content p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .slide-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .slide-content p {
+    font-size: 1.2rem;
+  }
+  
+  .next-block-content h2 {
+    font-size: 2rem;
+  }
+}
+
