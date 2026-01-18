@@ -5,6 +5,7 @@ import { Flip } from 'gsap/Flip';
 import Galaxy from './ParticleSystem';
 import { FaCloud, FaCode, FaDatabase, FaTools } from 'react-icons/fa';
 import { SiGit, SiJavascript, SiNodedotjs, SiPython, SiReact, SiTailwindcss } from 'react-icons/si';
+import UpdatedScroll from './UpdatedScroll/UpdatedScroll';
 
 gsap.registerPlugin(ScrollTrigger, Flip);
 
@@ -12,65 +13,59 @@ const OpScroll = () => {
     const [ison2nd, setIsOn2nd] = useState(false)
     const animationContainerRef = useRef(null);
     
-    useLayoutEffect(() => {
-        // Get the state of each target position
-        const secondState = Flip.getState('.second', { props: 'all' });
-        const thirdState = Flip.getState('.third', { props: 'all' });
+ useLayoutEffect(() => {
+  const secondState = Flip.getState('.second', { props: 'all' });
+  const thirdState = Flip.getState('.third', { props: 'all' });
 
-        const flipConfig = {
-            absolute: true,
-            ease: 'none',
-            simple: true
-        };
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: animationContainerRef.current,
+      start: 'top top',
+      end: '+=300%', // 🔥 critical
+      scrub: 1,
+      markers: true,
+      invalidateOnRefresh: true,
+    },
+  });
 
-        // Create timeline with scroll trigger
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: animationContainerRef.current,
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 1,
-                markers: true,
-                invalidateOnRefresh: true // Add this
-            }
-        });
+  tl.to({}, { duration: 0.2 })
+    .add(
+      Flip.fit('.sword', secondState, {
+        absolute: true,
+        ease: 'none',
+        duration: 0.3,
+        onComplete: () => setIsOn2nd(true),
+      })
+    )
+    .to({}, { duration: 0.2 })
+    .add(
+      Flip.fit('.sword', thirdState, {
+        absolute: true,
+        ease: 'none',
+        duration: 0.3,
+      })
+    );
 
-        // Add animations
-        tl.to({}, { duration: 0.2 })
-          .add(Flip.fit('.don', secondState, { ...flipConfig, duration: 0.3, onComplete: () => setIsOn2nd(true),  }))
-          .to({}, { duration: 0.2 })
-          .add(Flip.fit('.don', thirdState, { ...flipConfig, duration: 0.3 }));
+  return () => {
+    tl.scrollTrigger?.kill();
+    tl.kill();
+  };
+}, []);
 
-        // Cleanup
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-            tl.kill();
-        };
-    }, []);
 
     return (
     <div>
             {/* Hero Section - Outside animation */}
    <div 
-        className="next-block" 
+        className=" h-[90vh] bg-gray-800/10" 
         // ref={nextBlockRef}
-        style={{
-          height: '100vh',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          // Performance
-          willChange: 'background-color',
-          transform: 'translateZ(0)',
-        }}
+      
       >
-<Galaxy />
+{/* <Galaxy /> */}
 
-<div className='absolute top-1/4 space-y-5 left-[13%]'>
+<div className='absolute text-white  top-1/4 space-y-5 left-[13%]'>
 <div className="flex gap-3 items-stretch">
-  <div className="bg-emerald-400 w-[5px]" />
+  <div className="bg-emerald-400 w-1.25" />
   <div>
     <p className='   text-5xl z-20 mb-7'>Sahareior Sijan</p>
 <p className=' z-20 mt-3 '>FullStack Developer</p>
@@ -82,16 +77,17 @@ const OpScroll = () => {
             {/* Animation Container - Wrap sections where animation happens */}
             <div className='animation-container relative'>
                 {/* First Section - Starting position */}
-                <section className='min-h-screen bg-white py-16 px-8 flex flex-col items-center justify-center'>
+                <section className='min-h-screen bg-gray-800/10 py-16 px-8 flex flex-col items-center justify-center'>
                     <h2 className='text-3xl font-semibold mb-8 text-center'>Location 1</h2>
                     <div className='flex items-center justify-center gap-4'>
                         <p className='text-gray-600'>The animated element starts here</p>
-                        <div className='don w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg' />
+                        <div className=' w-16 h-16 rounded-full bg-linear-to-br from-amber-400 to-orange-500 shadow-lg' />
+                        <img className='sword' src="/images/sword.png" alt="" />
                     </div>
                 </section>
 
                 {/* Middle Section - like your Carousel */}
-       <section id="skills" className="py-20 px-6 md:px-20 min-h-screen bg-gray-800/50">
+       <section id="skills" className="py-20 px-6 md:px-20 min-h-screen bg-gray-800/10">
                     <div className="max-w-6xl mx-auto">
                         <h2 className="text-4xl font-bold mb-10 flex items-center">
                             <FaCode className="mr-3 text-green-400" />
@@ -185,7 +181,7 @@ const OpScroll = () => {
   
 
                 {/* Third Section - Final animation target */}
-                <section className='min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-16 px-8 flex flex-col items-center justify-center'>
+                <section className='min-h-screen bg-gray-800/10 py-16 px-8 flex flex-col items-center justify-center'>
                     <h2 className='text-3xl font-semibold mb-8 text-center'>Location 3</h2>
                     <div className='flex items-center justify-center gap-4'>
                         <p className='text-gray-600'>Finally lands here</p>
@@ -193,6 +189,9 @@ const OpScroll = () => {
                     </div>
                 </section>
             </div>
+
+
+           
 
             {/* Footer - Outside animation */}
             <footer className='bg-gray-800 text-white py-12 px-8'>
